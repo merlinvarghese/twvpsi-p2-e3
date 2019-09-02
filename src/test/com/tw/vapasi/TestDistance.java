@@ -8,13 +8,28 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestDistance {
 
   @Test
+  void expect100CmEquals100cm() {
+    assertEquals(cms(100), cms(100));
+  }
+
+  @Test
+  void expectFalseWhenOneObjectIsNull() {
+    assertNotEquals(cms(30),null);
+  }
+
+  @Test
+  void expectFalseWhenObjectsAreDifferent() {
+    assertNotEquals(cms(30),new String("Apple"));
+  }
+
+  @Test
   void expect100CmEquals1M() {
     assertEquals(cms(100), meter(1));
   }
 
   @Test
   void expect90CmNotEquals1m() {
-    assertNotEquals(cms(90),meter(1));
+    assertNotEquals(cms(90), meter(1));
   }
 
   @Test
@@ -36,6 +51,5 @@ class TestDistance {
   void expect7000MeterEquals8Kilometer() {
     assertNotEquals(meter(7000), km(8));
   }
-
 
 }
