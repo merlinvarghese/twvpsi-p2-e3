@@ -8,8 +8,8 @@ class Distance {
   private final Unit unit;
   private final double value;
 
-  private static final double ONE_METRE_IN_CENTIMETERS = 100;
-  private static final double ONE_KILOMETER_IN_CENTIMETER = 100000;
+  private static final double M_IN_CMS = 100;
+  private static final double KM_IN_CMS = 100000;
 
   enum Unit {
     KM,
@@ -39,9 +39,9 @@ class Distance {
   private double convertToCms() {
     switch (this.unit) {
       case M:
-        return this.value * ONE_METRE_IN_CENTIMETERS;
+        return this.value * M_IN_CMS;
       case KM:
-        return this.value * ONE_KILOMETER_IN_CENTIMETER;
+        return this.value * KM_IN_CMS;
       default:
         return this.value;
     }
