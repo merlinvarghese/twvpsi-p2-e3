@@ -3,79 +3,65 @@ package com.tw.vapasi;
 import java.util.Objects;
 
 //Understands length in various units
- class Distance {
-  private String unitName;
-  private int unitValue;
-  private final static String BASE_UNIT = "m";
+class Distance {
 
-  public Distance(int unitValue, String unitName) {
-    this.unitName = unitName;
-    this.unitValue = unitValue;
+  private final Unit unit;
+  private final double value;
 
+  private static final double ONE_METRE_IN_CENTIMETERS = 100;
+  private static final double ONE_KILOMETER_IN_CENTIMETER = 100000;
+
+  enum Unit {
+    KM,
+    CM,
+    M
   }
 
-  private boolean compare(Distance obj) {
+  private Distance(Unit unit, double value) {
+    this.unit = unit;
+    this.value = value;
+  }
 
-    switch (obj.unitName) {
-      case "m":
-        if ((obj.unitName == "m") && (this.unitName == "cm")) {
 
-          if (obj.unitValue == 1 && this.unitValue == 100) {
-            return true;
+  static Distance cms(int magnitude) {
+    return new Distance(Unit.CM, magnitude);
+  }
 
-          }
-          break;
-        }
+  static Distance km(int magnitude) {
+    return new Distance(Unit.KM, magnitude);
+  }
 
+  static Distance meter(int magnitude) {
+    return new Distance(Unit.M, magnitude);
+  }
+
+
+  private double convertToCms() {
+    switch (this.unit) {
+      case M:
+        return this.value * ONE_METRE_IN_CENTIMETERS;
+      case KM:
+        return this.value * ONE_KILOMETER_IN_CENTIMETER;
+      default:
+        return this.value;
     }
-
-    return false;
-
   }
-
-  private void convertToBaseUnit(Distance obj) {
-    double convertedValue = 0;
-    double convertedOther = 0;
-
-    if (this.unitName != "m") {
-
-      this.unitName = "m";
-
-      if (this.unitName == "cm")
-        this.unitValue = this.unitValue / 100;
-      if (this.unitName == "km")
-        this.unitValue = this.unitValue * 1000;
-
-    }
-
-  }
-
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Distance other = (Distance) o;
-
-    if (this.unitName != "m") {
-
-      convertToBaseUnit(this);
+  public boolean equals(Object otherObject) {
+    if (this == otherObject) {
+      return true;
     }
-    if (other.unitName != "m") {
-
-      convertToBaseUnit(other);
-
+    if ((otherObject == null) || (this.getClass() != otherObject.getClass())) {
+      return false;
     }
-
-    // return compare(other);
-    return unitName == other.unitName &&
-        Objects.equals(unitValue, other.unitValue);
-
-
+    Distance otherDistance = (Distance) otherObject;
+    return this.convertToCms() == otherDistance.convertToCms();
   }
+
 
   @Override
   public int hashCode() {
-    return Objects.hash(unitName, unitValue);
+    return Objects.hash(this.unit.hashCode(), this.value);
   }
 }
