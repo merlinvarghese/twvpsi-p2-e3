@@ -54,10 +54,10 @@ class MeasurementTest {
 
   @Test
   void expect1KgEquals1000Gms() {
-      assertTrue(kg(1).equals(gm(1000)));
+    assertEquals(kg(1), gm(1000));
   }
   @Test
   void expect1KgNotEquals1Km() {
-      assertFalse(meter(10).equals(gm(1000)));
+    assertNotEquals(meter(10), gm(1000));
   }
 }

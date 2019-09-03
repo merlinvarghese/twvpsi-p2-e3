@@ -2,43 +2,34 @@ package com.tw.vapasi;
 
 import java.util.Objects;
 
-//Understands length in various units
+//Understands quantifiable property of object in various units
 class Measurement {
-
     private final Unit unit;
     private final double value;
-    private final MeasurementType measurementType;
 
-    enum MeasurementType {
-        WEIGHT,
-        LENGTH;
-    }
-
-    private Measurement(Unit unit, double value, MeasurementType measurementType) {
+    private Measurement(Unit unit, double value) {
         this.unit = unit;
         this.value = value;
-        this.measurementType = measurementType;
     }
 
-
     static Measurement cms(int magnitude) {
-        return new Measurement(Unit.CM, magnitude, MeasurementType.LENGTH);
+        return new Measurement(Unit.CM, magnitude);
     }
 
     static Measurement km(int magnitude) {
-        return new Measurement(Unit.KM, magnitude, MeasurementType.LENGTH);
+        return new Measurement(Unit.KM, magnitude);
     }
 
     static Measurement meter(int magnitude) {
-        return new Measurement(Unit.M, magnitude, MeasurementType.LENGTH);
+        return new Measurement(Unit.M, magnitude);
     }
 
     static Measurement kg(int magnitude) {
-        return new Measurement(Unit.KG, magnitude, MeasurementType.WEIGHT);
+        return new Measurement(Unit.KG, magnitude);
     }
 
     static Measurement gm(int magnitude) {
-        return new Measurement(Unit.GM, magnitude, MeasurementType.WEIGHT);
+        return new Measurement(Unit.GM, magnitude);
     }
 
     @Override
@@ -50,19 +41,21 @@ class Measurement {
             return false;
         }
         Measurement otherMeasurement = (Measurement) otherObject;
-        if (isDifferentMeasurementType(otherMeasurement)) {
+        if (this.isDifferentMeasurementType(otherMeasurement)) {
             return false;
         }
-        return this.unit.convertToBase(this.value) == otherMeasurement.unit.convertToBase(otherMeasurement.value);
-    }
+        return convertToBaseUnit() == otherMeasurement.convertToBaseUnit();    }
 
     private boolean isDifferentMeasurementType(Measurement otherMeasurement) {
-        return !this.measurementType.equals(otherMeasurement.measurementType);
+        return !this.unit.isUnitTypeEqualTo(otherMeasurement.unit);
     }
-
 
     @Override
     public int hashCode() {
         return Objects.hash(this.unit.hashCode(), this.value);
+    }
+
+    private double convertToBaseUnit() {
+        return unit.convertToBase(value);
     }
 }
