@@ -7,7 +7,9 @@ enum Unit {
 
   KM(100000),
   CM(1),
-  M(100);
+  M(100),
+  KG(1000),
+  GM(1);
 
   private final double baseConversionValue;
 
