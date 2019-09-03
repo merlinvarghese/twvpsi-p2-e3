@@ -11,11 +11,6 @@ class Distance {
   private static final double M_IN_CMS = 100;
   private static final double KM_IN_CMS = 100000;
 
-  enum Unit {
-    KM,
-    CM,
-    M
-  }
 
   private Distance(Unit unit, double value) {
     this.unit = unit;
@@ -36,17 +31,6 @@ class Distance {
   }
 
 
-  private double convertToCms() {
-    switch (this.unit) {
-      case M:
-        return this.value * M_IN_CMS;
-      case KM:
-        return this.value * KM_IN_CMS;
-      default:
-        return this.value;
-    }
-  }
-
   @Override
   public boolean equals(Object otherObject) {
     if (this == otherObject) {
@@ -56,7 +40,7 @@ class Distance {
       return false;
     }
     Distance otherDistance = (Distance) otherObject;
-    return this.convertToCms() == otherDistance.convertToCms();
+    return this.unit.convertToBase(this.value) == otherDistance.unit.convertToBase(otherDistance.value);
   }
 
 
