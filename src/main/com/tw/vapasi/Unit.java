@@ -19,5 +19,4 @@ enum Unit {
     return value * baseConversionValue;
   }
 
-
 }
