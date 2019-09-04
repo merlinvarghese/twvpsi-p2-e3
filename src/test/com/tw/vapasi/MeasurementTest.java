@@ -3,9 +3,10 @@ package com.tw.vapasi;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.tw.vapasi.Measurement.*;
+import static com.tw.vapasi.AddableMeasurement.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("ALL")
 class MeasurementTest {
 
     @Nested
@@ -72,7 +73,6 @@ class MeasurementTest {
 
     @Nested
     class AdditionTest {
-
         @Test
         void expect2KgPlus200gmEquals2_2kg() throws Exception {
             assertEquals(kg(2.2), kg(2).add(gm(200)));
@@ -84,15 +84,57 @@ class MeasurementTest {
                 gm(200).add(cms(100));
                 fail("It has Thrown Exception");
             } catch (Exception e) {
-
+                //should come here
             }
         }
 
-      @Test
-      void expect3meterFor2meterPlus100cm() throws Exception {
-        Measurement result = meter(2).add(cms(100));
-        assertEquals(meter(3.0), result);
-      }
+        @Test
+        void expect3meterFor2meterPlus100cm() throws Exception {
+            AddableMeasurement result = meter(2).add(cms(100));
+            assertEquals(meter(3.0), result);
+        }
+    }
 
+    @Nested
+    class TemperatureTest {
+        @Test
+        void expect32FahrenheitConvertedTozeroCentigrade() {
+            Measurement fahrenheit = fahrenheit(32);
+            Measurement expected = centigrade(0);
+
+            assertEquals(expected, fahrenheit);
+        }
+
+        @Test
+        void expectFahrenheitConvertedToCorrespondingCentigrade() {
+            Measurement fahrenheit = fahrenheit(50);
+            Measurement expected = centigrade(10);
+
+            assertEquals(expected, fahrenheit);
+        }
+
+        @Test
+        void expect273_15KelvinConvertedTozeroCentigrade() {
+            Measurement kelvin = kelvin(273.15);
+            Measurement expected = centigrade(0);
+
+            assertEquals(expected, kelvin);
+        }
+
+        @Test
+        void expectKelvinConvertedToCorrespondingCentigrade() {
+            Measurement kelvin = kelvin(283.15);
+            Measurement expected = centigrade(10);
+
+            assertEquals(expected, kelvin);
+        }
+
+        @Test
+        void expectKelvinConvertedToCorrespondingFahrenheit() {
+            Measurement centigrade = kelvin(283.15);
+            Measurement expected = fahrenheit(50);
+
+            assertEquals(expected, centigrade);
+        }
     }
 }

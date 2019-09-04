@@ -4,32 +4,24 @@ import java.util.Objects;
 
 //Understands quantifiable property of object in various units
 class Measurement {
-    private final Unit unit;
-    private final double value;
+    protected final Unit unit;
+    protected final double value;
 
-    private Measurement(Unit unit, double value) {
+    protected Measurement(Unit unit, double value) {
         this.unit = unit;
         this.value = value;
     }
 
-    static Measurement cms(double magnitude) {
-        return new Measurement(Unit.CM, magnitude);
+    static Measurement centigrade(double magnitude) {
+        return new Measurement(Unit.C, magnitude);
     }
 
-    static Measurement km(double magnitude) {
-        return new Measurement(Unit.KM, magnitude);
+    static Measurement fahrenheit(double magnitude) {
+        return new Measurement(Unit.F, magnitude);
     }
 
-    static Measurement meter(double magnitude) {
-        return new Measurement(Unit.M, magnitude);
-    }
-
-    static Measurement kg(double magnitude) {
-        return new Measurement(Unit.KG, magnitude);
-    }
-
-    static Measurement gm(double magnitude) {
-        return new Measurement(Unit.GM, magnitude);
+    static Measurement kelvin(double magnitude) {
+        return new Measurement(Unit.K, magnitude);
     }
 
     @Override
@@ -37,18 +29,22 @@ class Measurement {
         if (this == otherObject) {
             return true;
         }
-        if ((otherObject == null) || (this.getClass() != otherObject.getClass())) {
+        if ((otherObject == null)) {
             return false;
         }
+        if (this.getClass() != otherObject.getClass()) {
+            return false;
+        }
+
         Measurement otherMeasurement = (Measurement) otherObject;
-        if (!this.isSameMeasurementType(otherMeasurement)) {
+        if (this.isDifferentMeasurementType(otherMeasurement)) {
             return false;
         }
         return convertToBaseUnit() == otherMeasurement.convertToBaseUnit();
     }
 
-    private boolean isSameMeasurementType(Measurement otherMeasurement) {
-        return unit.isUnitTypeEqualTo(otherMeasurement.unit);
+    private boolean isDifferentMeasurementType(Measurement otherMeasurement) {
+        return !unit.isUnitTypeEqualTo(otherMeasurement.unit);
     }
 
     @Override
@@ -58,16 +54,6 @@ class Measurement {
 
     private double convertToBaseUnit() {
         return unit.convertToBase(value);
-    }
-
-    Measurement add(Measurement otherMeasurement) throws Exception {
-        if (!this.unit.isUnitTypeEqualTo(otherMeasurement.unit)) {
-            throw new Exception("Cannot perform addition on different unit types");
-        }
-        double result = this.value +
-                otherMeasurement.unit.converTo(otherMeasurement.value, this.unit);
-
-        return new Measurement(this.unit, result);
     }
 
     @Override
