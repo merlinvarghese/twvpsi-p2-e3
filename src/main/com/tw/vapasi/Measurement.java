@@ -61,17 +61,17 @@ class Measurement {
     }
 
     Measurement add(Measurement otherMeasurement) throws Exception {
-        if(!this.unit.isUnitTypeEqualTo(otherMeasurement.unit)){
+        if (!this.unit.isUnitTypeEqualTo(otherMeasurement.unit)) {
             throw new Exception("Cannot perform addition on different unit types");
         }
         double result = this.value +
                 otherMeasurement.unit.converTo(otherMeasurement.value, this.unit);
 
-return new Measurement(this.unit, result);
+        return new Measurement(this.unit, result);
     }
 
     @Override
     public String toString() {
-        return "" + this.unit + ":"+this.value;
+        return "" + this.unit + ":" + this.value;
     }
 }
