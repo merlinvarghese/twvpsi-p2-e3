@@ -12,23 +12,23 @@ class Measurement {
         this.value = value;
     }
 
-    static Measurement cms(int magnitude) {
+    static Measurement cms(double magnitude) {
         return new Measurement(Unit.CM, magnitude);
     }
 
-    static Measurement km(int magnitude) {
+    static Measurement km(double magnitude) {
         return new Measurement(Unit.KM, magnitude);
     }
 
-    static Measurement meter(int magnitude) {
+    static Measurement meter(double magnitude) {
         return new Measurement(Unit.M, magnitude);
     }
 
-    static Measurement kg(int magnitude) {
+    static Measurement kg(double magnitude) {
         return new Measurement(Unit.KG, magnitude);
     }
 
-    static Measurement gm(int magnitude) {
+    static Measurement gm(double magnitude) {
         return new Measurement(Unit.GM, magnitude);
     }
 
@@ -41,13 +41,14 @@ class Measurement {
             return false;
         }
         Measurement otherMeasurement = (Measurement) otherObject;
-        if (this.isDifferentMeasurementType(otherMeasurement)) {
+        if (!this.isSameMeasurementType(otherMeasurement)) {
             return false;
         }
-        return convertToBaseUnit() == otherMeasurement.convertToBaseUnit();    }
+        return convertToBaseUnit() == otherMeasurement.convertToBaseUnit();
+    }
 
-    private boolean isDifferentMeasurementType(Measurement otherMeasurement) {
-        return !this.unit.isUnitTypeEqualTo(otherMeasurement.unit);
+    private boolean isSameMeasurementType(Measurement otherMeasurement) {
+        return unit.isUnitTypeEqualTo(otherMeasurement.unit);
     }
 
     @Override
@@ -57,5 +58,20 @@ class Measurement {
 
     private double convertToBaseUnit() {
         return unit.convertToBase(value);
+    }
+
+    Measurement add(Measurement otherMeasurement) throws Exception {
+        if(!this.unit.isUnitTypeEqualTo(otherMeasurement.unit)){
+            throw new Exception("Cannot perform addition on different unit types");
+        }
+        double result = this.value +
+                otherMeasurement.unit.converTo(otherMeasurement.value, this.unit);
+
+return new Measurement(this.unit, result);
+    }
+
+    @Override
+    public String toString() {
+        return "" + this.unit + ":"+this.value;
     }
 }
